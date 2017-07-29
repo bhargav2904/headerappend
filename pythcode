@@ -1,0 +1,23 @@
+import os
+import csv
+
+
+def setfilename(tread):
+    fileName = tread[0:tread.index('.')] + '_source' + '.csv'
+    return fileName
+
+user_input = raw_input("Please enter the path of the file.\n")
+assert os.path.exists(user_input), "Path is incorrect or file doesn't exist!!!"
+os.chdir(user_input)
+
+user_input1 = raw_input("Please enter the file name.\n")
+opFilename = setfilename(user_input1)
+
+with open(user_input1) as ipfile, open(opFilename, "wb") as opfile:
+    user_input2 = raw_input("Please enter the string to be appended.\n")
+    reader = csv.reader(ipfile)
+    header = reader.next()
+    writer = csv.writer(opfile)
+    new_header = map(lambda x: "{}{}".format(user_input2, x), header)
+    writer.writerow(new_header)
+    writer.writerows(reader)
